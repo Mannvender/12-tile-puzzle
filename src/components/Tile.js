@@ -12,16 +12,16 @@ class Tile extends Component {
 		const actionJsx = [];
 		allowedMoves.forEach(moveName => {
 			if (moveName === 'left') {
-				actionJsx.push(<button onClick={() => tileActions.moveLeft(tileIndex)}>Left</button>)
+				actionJsx.push(<button onClick={() => tileActions.leftMove(tileIndex)}>Left</button>)
 			}
 			if (moveName === 'right') {
-				actionJsx.push(<button onClick={() => tileActions.moveRight(tileIndex)}>Right</button>)
+				actionJsx.push(<button onClick={() => tileActions.rightMove(tileIndex)}>Right</button>)
 			}
 			if (moveName === 'up') {
-				actionJsx.push(<button onClick={() => tileActions.moveUp(tileIndex)}>Up</button>)
+				actionJsx.push(<button onClick={() => tileActions.upMove(tileIndex)}>Up</button>)
 			}
 			if (moveName === 'down') {
-				actionJsx.push(<button onClick={() => tileActions.moveDown(tileIndex)}>Down</button>)
+				actionJsx.push(<button onClick={() => tileActions.downMove(tileIndex)}>Down</button>)
 			}
 		});
 		return (
