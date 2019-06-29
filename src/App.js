@@ -55,7 +55,7 @@ class App extends Component {
 			// topMove is allowed
 			allowedMoves.push('up');
 		}
-		if (Boolean(tilesInfo[tileIndex - 1]) === false && bottomBoundry.indexOf(tileIndex) === -1) {
+		if (Boolean(tilesInfo[tileIndex + 4]) === false && bottomBoundry.indexOf(tileIndex) === -1) {
 			// bottomMove is allowed
 			allowedMoves.push('down');
 		}
