@@ -21,6 +21,7 @@ class Tile extends Component {
 				actionJsx.push(<button onClick={() => tileActions.upMove(tileIndex)}>Up</button>)
 			}
 			if (moveName === 'down') {
+				
 				actionJsx.push(<button onClick={() => tileActions.downMove(tileIndex)}>Down</button>)
 			}
 		});

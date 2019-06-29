@@ -93,7 +93,7 @@ class App extends Component {
 	}
 
 	moveTileToLeft = sourceIndex => {
-		if (Boolean(sourceIndex) === false) return;
+		if (sourceIndex !== 0 && Boolean(sourceIndex) === false) return;
 		// tiles on extreme left can't move left
 		const illegalIndices = [0, 4, 8];
 		if (illegalIndices.indexOf(sourceIndex) > -1) return;
@@ -103,7 +103,7 @@ class App extends Component {
 	}
 
 	moveTileToRight = sourceIndex => {
-		if (Boolean(sourceIndex) === false) return;
+		if (sourceIndex !== 0 && Boolean(sourceIndex) === false) return;
 		// tiles on extreme right can't move right
 		const illegalIndices = [3, 7, 11];
 		if (illegalIndices.indexOf(sourceIndex) > -1) return;
@@ -113,7 +113,7 @@ class App extends Component {
 	}
 
 	moveTileToUp = sourceIndex => {
-		if (Boolean(sourceIndex) === false) return;
+		if (sourceIndex !== 0 && Boolean(sourceIndex) === false) return;
 		// tiles on extreme Up can't move up
 		const illegalIndices = [0, 1, 2, 3];
 		if (illegalIndices.indexOf(sourceIndex) > -1) return;
@@ -123,7 +123,7 @@ class App extends Component {
 	}
 
 	moveTileToDown = sourceIndex => {
-		if (Boolean(sourceIndex) === false) return;
+		if (sourceIndex !== 0 && Boolean(sourceIndex) === false) return;
 		// tiles on extreme down can't move down
 		const illegalIndices = [8, 9, 10, 11];
 		if (illegalIndices.indexOf(sourceIndex) > -1) return;
