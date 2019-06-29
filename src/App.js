@@ -35,6 +35,33 @@ class App extends Component {
 		return userWon;
 	}
 
+	getAllowedActions = tileIndex => {
+		const allowedMoves = [];
+		const { tilesInfo } = this.state;
+		if (Boolean(tilesInfo) === false) return allowedMoves;
+		const rightBoundry = [3, 7, 11];
+		const leftBoundry = [0, 4, 8];
+		const topBoundry = [0, 1, 2, 3];
+		const bottomBoundry = [8, 9, 10, 11];
+		if (Boolean(tilesInfo[tileIndex + 1]) === false && rightBoundry.indexOf(tileIndex) === -1) {
+			// rightMove is allowed
+			allowedMoves.push('right');
+		}
+		if (Boolean(tilesInfo[tileIndex - 1]) === false && leftBoundry.indexOf(tileIndex) === -1) {
+			// leftMove is allowed
+			allowedMoves.push('left');
+		}
+		if (Boolean(tilesInfo[tileIndex - 4]) === false && topBoundry.indexOf(tileIndex) === -1) {
+			// topMove is allowed
+			allowedMoves.push('up');
+		}
+		if (Boolean(tilesInfo[tileIndex - 1]) === false && bottomBoundry.indexOf(tileIndex) === -1) {
+			// bottomMove is allowed
+			allowedMoves.push('down');
+		}
+		return allowedMoves;
+	}
+
 	handleLeftBtnClick = () => {
 		const { tilePostionFromUser } = this.state;
 		this.moveTileToLeft(tilePostionFromUser - 1);
@@ -129,26 +156,50 @@ class App extends Component {
 
 	render() {
 		const { tilesInfo, tilePostionFromUser } = this.state;
+		const tileActions = {
+			leftMove: this.moveTileToLeft,
+			rightMove: this.moveTileToRight,
+			upMove: this.moveTileToUp,
+			downMove: this.moveTileToDown
+		};
 		return (
 			<div className="App h-100 container">
 				<div className="row w-100 mt-5" style={rowStyle}>
 					{Array.from(Array(4).keys()).map(i =>
 						<div className="col-3" key={i}>
-							<Tile tileIndex={i} tileNumber={tilesInfo ? tilesInfo[i] : undefined} highlighted={tilePostionFromUser === i + 1} />
+							<Tile
+								allowedMoves={this.getAllowedActions(i)}
+								tileActions={tileActions}
+								tileIndex={i}
+								tileNumber={tilesInfo ? tilesInfo[i] : undefined}
+								highlighted={tilePostionFromUser === i + 1}
+							/>
 						</div>
 					)}
 				</div>
 				<div className="row w-100" style={rowStyle}>
 					{Array.from(Array(4).keys()).map(i =>
 						<div className="col-3" key={i + 4}>
-							<Tile tileIndex={i + 4} tileNumber={tilesInfo ? tilesInfo[i + 4] : undefined} highlighted={tilePostionFromUser === i + 5} />
+							<Tile
+								allowedMoves={this.getAllowedActions(i + 4)}
+								tileActions={tileActions}
+								tileIndex={i + 4}
+								tileNumber={tilesInfo ? tilesInfo[i + 4] : undefined}
+								highlighted={tilePostionFromUser === i + 5}
+							/>
 						</div>
 					)}
 				</div>
 				<div className="row w-100" style={rowStyle}>
 					{Array.from(Array(4).keys()).map(i =>
 						<div className="col-3" key={i + 8}>
-							<Tile tileIndex={i + 8} tileNumber={tilesInfo ? tilesInfo[i + 8] : undefined} highlighted={tilePostionFromUser === i + 9} />
+							<Tile
+								allowedMoves={this.getAllowedActions(i + 8)}
+								tileActions={tileActions}
+								tileIndex={i + 8}
+								tileNumber={tilesInfo ? tilesInfo[i + 8] : undefined}
+								highlighted={tilePostionFromUser === i + 9}
+							/>
 						</div>
 					)}
 				</div>
