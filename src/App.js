@@ -4,6 +4,8 @@ import './material-kit.css';
 
 import Tile from './components/Tile';
 
+const rowStyle = { height: '30vh' };
+
 class App extends Component {
 	state = {
 		tilesInfo: null,
@@ -24,9 +26,8 @@ class App extends Component {
 		this.setState({ tilesInfo });
 	}
 
-	checkForWin = () => {
-		// FIXME: edge cases
-		const { tilesInfo } = this.state;
+	checkForWin = tilesInfo => {
+		// TODO: look for edge cases
 		let userWon = true;
 		for (let i = 0; i < 11; i++) {
 			if (tilesInfo[i] !== i + 1) userWon = false;
@@ -41,7 +42,6 @@ class App extends Component {
 
 	handleRightBtnClick = () => {
 		const { tilePostionFromUser } = this.state;
-		console.log(tilePostionFromUser)
 		this.moveTileToRight(tilePostionFromUser - 1);
 	}
 
@@ -58,80 +58,51 @@ class App extends Component {
 	handleTilePostionInpChange = e => {
 		const userInp = parseInt(e.target.value)
 		if (userInp > 0 && userInp < 13) {
-			this.setState({ tilePostionFromUser: parseInt(e.target.value) })
+			this.setState({ tilePostionFromUser: parseInt(e.target.value) });
 		}
 		if (Boolean(userInp) === false) {
-			this.setState({ tilePostionFromUser: '' })
+			this.setState({ tilePostionFromUser: '' });
 		}
 	}
 
-	moveTileToLeft = tileIndex => {
-		if (Boolean(tileIndex) === false) return;
+	moveTileToLeft = sourceIndex => {
+		if (Boolean(sourceIndex) === false) return;
 		// tiles on extreme left can't move left
 		const illegalIndices = [0, 4, 8];
-		if (illegalIndices.indexOf(tileIndex) > -1) return;
+		if (illegalIndices.indexOf(sourceIndex) > -1) return;
 
-		const { tilesInfo } = this.state;
-		const destinationIndex = tileIndex - 1;
-		// check if move allowed
-		if (Boolean(tilesInfo[destinationIndex]) === false) {
-			// swap tile numbers
-			tilesInfo[destinationIndex] = tilesInfo[tileIndex];
-			tilesInfo[tileIndex] = null;
-		}
-		if (this.checkForWin) alert('Hey you won, have a nice day')
-		this.setState({ tilesInfo });
+		const destinationIndex = sourceIndex - 1;
+		this.swapTileNumbers(destinationIndex, sourceIndex);
 	}
 
-	moveTileToRight = tileIndex => {
-		if (Boolean(tileIndex) === false) return;
+	moveTileToRight = sourceIndex => {
+		if (Boolean(sourceIndex) === false) return;
 		// tiles on extreme right can't move right
 		const illegalIndices = [3, 7, 11];
-		if (illegalIndices.indexOf(tileIndex) > -1) return;
+		if (illegalIndices.indexOf(sourceIndex) > -1) return;
 
-		const { tilesInfo } = this.state;
-		const destinationIndex = tileIndex + 1;
-		// check if move allowed
-		if (Boolean(tilesInfo[destinationIndex]) === false) {
-			// swap tile numbers
-			tilesInfo[destinationIndex] = tilesInfo[tileIndex];
-			tilesInfo[tileIndex] = null;
-		}
-		this.setState({ tilesInfo });
+		const destinationIndex = sourceIndex + 1;
+		this.swapTileNumbers(destinationIndex, sourceIndex);
 	}
 
-	moveTileToUp = tileIndex => {
-		if (Boolean(tileIndex) === false) return;
+	moveTileToUp = sourceIndex => {
+		if (Boolean(sourceIndex) === false) return;
 		// tiles on extreme Up can't move up
 		const illegalIndices = [0, 1, 2, 3];
-		if (illegalIndices.indexOf(tileIndex) > -1) return;
+		if (illegalIndices.indexOf(sourceIndex) > -1) return;
 
-		const { tilesInfo } = this.state;
-		const destinationIndex = tileIndex - 4;
-		// check if move allowed
-		if (Boolean(tilesInfo[destinationIndex]) === false) {
-			// swap tile numbers
-			tilesInfo[destinationIndex] = tilesInfo[tileIndex];
-			tilesInfo[tileIndex] = null;
-		}
-		this.setState({ tilesInfo });
+		const destinationIndex = sourceIndex - 4;
+		this.swapTileNumbers(destinationIndex, sourceIndex);
 	}
 
-	moveTileToDown = tileIndex => {
-		if (Boolean(tileIndex) === false) return;
+	moveTileToDown = sourceIndex => {
+		if (Boolean(sourceIndex) === false) return;
 		// tiles on extreme down can't move down
 		const illegalIndices = [8, 9, 10, 11];
-		if (illegalIndices.indexOf(tileIndex) > -1) return;
+		if (illegalIndices.indexOf(sourceIndex) > -1) return;
 
-		const { tilesInfo } = this.state;
-		const destinationIndex = tileIndex + 4;
-		// check if move allowed
-		if (Boolean(tilesInfo[destinationIndex]) === false) {
-			// swap tile numbers
-			tilesInfo[destinationIndex] = tilesInfo[tileIndex];
-			tilesInfo[tileIndex] = null;
-		}
-		this.setState({ tilesInfo });
+		const destinationIndex = sourceIndex + 4;
+		this.swapTileNumbers(destinationIndex, sourceIndex);
 	}
 
 	shuffleArray = array => {
@@ -144,54 +115,42 @@ class App extends Component {
 		return array;
 	}
 
-	swapTileNumbers = () => {
-
+	swapTileNumbers = (destinationIndex, sourceIndex) => {
+		const { tilesInfo } = this.state;
+		// check if move allowed
+		if (Boolean(tilesInfo[destinationIndex]) === false) {
+			// swap tile numbers
+			tilesInfo[destinationIndex] = tilesInfo[sourceIndex];
+			tilesInfo[sourceIndex] = null;
+		}
+		if (this.checkForWin(tilesInfo)) alert('Hey you won, have a nice day');
+		this.setState({ tilesInfo });
 	}
+
 	render() {
 		const { tilesInfo, tilePostionFromUser } = this.state;
 		return (
 			<div className="App h-100 container">
-				<div className="row w-100 mt-5" style={{ height: '30vh' }}>
-					<div className="col-3">
-						<Tile tileIndex={0} tileNumber={tilesInfo ? tilesInfo[0] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={1} tileNumber={tilesInfo ? tilesInfo[1] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={2} tileNumber={tilesInfo ? tilesInfo[2] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={3} tileNumber={tilesInfo ? tilesInfo[3] : undefined} />
-					</div>
+				<div className="row w-100 mt-5" style={rowStyle}>
+					{Array.from(Array(4).keys()).map(i =>
+						<div className="col-3" key={i}>
+							<Tile tileIndex={i} tileNumber={tilesInfo ? tilesInfo[i] : undefined} />
+						</div>
+					)}
 				</div>
-				<div className="row w-100" style={{ height: '30vh' }}>
-					<div className="col-3">
-						<Tile tileIndex={4} tileNumber={tilesInfo ? tilesInfo[4] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={5} tileNumber={tilesInfo ? tilesInfo[5] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={6} tileNumber={tilesInfo ? tilesInfo[6] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={7} tileNumber={tilesInfo ? tilesInfo[7] : undefined} />
-					</div>
+				<div className="row w-100" style={rowStyle}>
+					{Array.from(Array(4).keys()).map(i =>
+						<div className="col-3" key={i + 4}>
+							<Tile tileIndex={i + 4} tileNumber={tilesInfo ? tilesInfo[i + 4] : undefined} />
+						</div>
+					)}
 				</div>
-				<div className="row w-100" style={{ height: '30vh' }}>
-					<div className="col-3">
-						<Tile tileIndex={8} tileNumber={tilesInfo ? tilesInfo[8] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={9} tileNumber={tilesInfo ? tilesInfo[9] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={10} tileNumber={tilesInfo ? tilesInfo[10] : undefined} />
-					</div>
-					<div className="col-3">
-						<Tile tileIndex={11} tileNumber={tilesInfo ? tilesInfo[11] : undefined} />
-					</div>
+				<div className="row w-100" style={rowStyle}>
+					{Array.from(Array(4).keys()).map(i =>
+						<div className="col-3" key={i + 8}>
+							<Tile tileIndex={i + 8} tileNumber={tilesInfo ? tilesInfo[i + 8] : undefined} />
+						</div>
+					)}
 				</div>
 				<input className="w-100 my-3"
 					onChange={e => this.handleTilePostionInpChange(e)}
