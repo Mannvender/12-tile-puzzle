@@ -134,21 +134,21 @@ class App extends Component {
 				<div className="row w-100 mt-5" style={rowStyle}>
 					{Array.from(Array(4).keys()).map(i =>
 						<div className="col-3" key={i}>
-							<Tile tileIndex={i} tileNumber={tilesInfo ? tilesInfo[i] : undefined} />
+							<Tile tileIndex={i} tileNumber={tilesInfo ? tilesInfo[i] : undefined} highlighted={tilePostionFromUser === i + 1} />
 						</div>
 					)}
 				</div>
 				<div className="row w-100" style={rowStyle}>
 					{Array.from(Array(4).keys()).map(i =>
 						<div className="col-3" key={i + 4}>
-							<Tile tileIndex={i + 4} tileNumber={tilesInfo ? tilesInfo[i + 4] : undefined} />
+							<Tile tileIndex={i + 4} tileNumber={tilesInfo ? tilesInfo[i + 4] : undefined} highlighted={tilePostionFromUser === i + 5} />
 						</div>
 					)}
 				</div>
 				<div className="row w-100" style={rowStyle}>
 					{Array.from(Array(4).keys()).map(i =>
 						<div className="col-3" key={i + 8}>
-							<Tile tileIndex={i + 8} tileNumber={tilesInfo ? tilesInfo[i + 8] : undefined} />
+							<Tile tileIndex={i + 8} tileNumber={tilesInfo ? tilesInfo[i + 8] : undefined} highlighted={tilePostionFromUser === i + 9} />
 						</div>
 					)}
 				</div>

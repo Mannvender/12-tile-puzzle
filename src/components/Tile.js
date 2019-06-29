@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 
+const highlightedStyle = {
+	color: 'white',
+	backgroundColor: 'black'
+};
+
 class Tile extends Component {
-	state = {
-		style: {
-			color: 'black'
-		}
-	}
-	handleClick = () => {
-		this.setState({ style: { color: 'white' } });
-	}
 	render() {
-		const { tileNumber } = this.props;
+		const { highlighted, tileNumber } = this.props;
 		return (
 			<>
-				<div className="b4" onClick={this.handleClick} onKeyUp={this.handleKeyPress}>{tileNumber}</div>
+				<div className="b4" style={highlighted ? highlightedStyle: undefined} onClick={this.handleClick} onKeyUp={this.handleKeyPress}>{tileNumber}</div>
 			</>
 		);
 	}
